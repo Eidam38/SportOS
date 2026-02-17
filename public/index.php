@@ -1,19 +1,25 @@
 <?php
 
   require_once __DIR__ . '/../core/Router.php';
+  require_once __DIR__ . '/../app/controllers/HomeController.php';
+  require_once __DIR__ . '/../app/controllers/AuthController.php';
+  require_once __DIR__ . '/../app/controllers/ProfileController.php';
 
   $router = new Router();
 
   $router->get('/home', function () {
-      echo "<h1>Home</h1>";
+        $controller = new HomeController();
+        $controller->index();
   });
 
   $router->get('/login', function () {
-      echo "<h1>Login</h1>";
+        $controller = new AuthController();
+        $controller->login();
   });
 
   $router->get('/profile', function () {
-      echo "<h1>Profile</h1>";
+        $controller = new ProfileController();
+        $controller->index();
   });
 
   $router->dispatch($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);
