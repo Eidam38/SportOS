@@ -1,0 +1,11 @@
+services:
+  web:
+    build: .
+    container_name: sportos-web
+    ports:
+      - "8080:80"
+    volumes:
+      - ./public:/var/www/html
+      - ./app:/var/www/app
+      - ./core:/var/www/core
+    working_dir: /var/www
