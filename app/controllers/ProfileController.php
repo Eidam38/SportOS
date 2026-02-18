@@ -4,6 +4,6 @@
     {
         public function index(): void
         {
-              echo "<h1>Profile</h1>";
+            require_once __DIR__ . '/../views/profile.php';
         }
     }
