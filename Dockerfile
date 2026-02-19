@@ -9,3 +9,8 @@ RUN a2enmod rewrite
 # Defaultně je AllowOverride None → .htaccess by se ignoroval
 # Přepínáme na AllowOverride All → Apache bude .htaccess respektovat
 RUN sed -i '/<Directory \/var\/www\/>/,/<\/Directory>/ s/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
+
+# Instalace rozšíření pro PDO a MySQL
+# PDO (PHP Data Objects) je rozhraní pro přístup k databázím v PHP
+# pdo_mysql je konkrétní driver pro MySQL databáze
+RUN docker-php-ext-install pdo pdo_mysql

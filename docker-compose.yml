@@ -22,3 +22,36 @@ services:
 
     # Výchozí pracovní složka uvnitř kontejneru
     working_dir: /var/www
+
+    depends_on:
+      - db
+
+  # Závislost na databázi – zajistí, že se webový kontejner spustí až po spuštění databázového kontejneru
+  db:
+    # Používáme oficiální MySQL image verze 8.0
+    image: mysql:8.0
+
+    # Vlastní jméno kontejneru pro přehlednost
+    container_name: sportos-db
+
+    # Automatické restartování kontejneru v případě selhání
+    restart: always
+
+    # Nastavení environmentálních proměnných pro MySQL
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    
+    # Mapování portů:
+    # localhost:3307 → container:3306 (MySQL)
+    ports:
+      - "3307:3306"
+    
+    # Uložení dat MySQL do trvalého svazku, aby data nezmizela po restartu kontejneru
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+    db_data:
