@@ -19,6 +19,8 @@ services:
       - ./app:/var/www/app
       # Jádro
       - ./core:/var/www/core
+      # Konfigurační soubor s citlivými údaji – pouze pro čtení
+      - ./.env:/var/www/.env:ro
 
     # Výchozí pracovní složka uvnitř kontejneru
     working_dir: /var/www

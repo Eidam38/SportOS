@@ -4,8 +4,34 @@ Tento soubor funguje jako front controller aplikace.
 Každý HTTP request projde právě sem (díky .htaccess).
 
 Zde:
-načítáme potřebné třídy, definujeme routy, spouštíme router
+- načítáme konfiguraci (.env)
+- načítáme potřebné třídy (core + controllers)
+- definujeme routy
+- spouštíme router a zpracováváme request
 */
+
+function loadEnv(string $path): void 
+{
+      if (!file_exists($path)) {
+          return;
+      }
+
+      $lines = file($path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+
+      foreach ($lines as $line) {
+          $line = trim($line);
+
+          if ($line === '' || str_starts_with($line, '#')) {
+              continue;
+          }
+
+          [$key, $value] = array_map('trim', explode('=', $line, 2));
+          $_ENV[$key] = $value;
+          putenv("$key=$value");
+      }
+}
+
+loadEnv(__DIR__ . '/../.env');
 
 /* 
 Načtení závislostí (core + controllers) 
@@ -17,6 +43,7 @@ require_once __DIR__ . '/../core/Router.php';
 require_once __DIR__ . '/../app/controllers/HomeController.php';
 require_once __DIR__ . '/../app/controllers/AuthController.php';
 require_once __DIR__ . '/../app/controllers/ProfileController.php';
+require_once __DIR__ . '/../core/Database.php';
 
 $router = new Router();
 
