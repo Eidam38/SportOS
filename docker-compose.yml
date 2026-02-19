@@ -1,11 +1,24 @@
 services:
   web:
+    # Postaví image podle Dockerfile v aktuální složce
     build: .
+
+    # Vlastní jméno kontejneru (jen pro přehlednost)
     container_name: sportos-web
+
+    # Mapování portů:
+    # localhost:8080 → container:80 (Apache)
     ports:
       - "8080:80"
+
+    # Napojení lokálních složek do kontejneru
     volumes:
+      # Web root – Apache servíruje tuto složku
       - ./public:/var/www/html
+      # Aplikace MVC
       - ./app:/var/www/app
+      # Jádro
       - ./core:/var/www/core
+
+    # Výchozí pracovní složka uvnitř kontejneru
     working_dir: /var/www

@@ -1,5 +1,11 @@
+# Zapnutí rewrite engine
 RewriteEngine On
 
+# Pokud požadovaný soubor NEEXISTUJE...
 RewriteCond %{REQUEST_FILENAME} !-f
+# ...a zároveň NEEXISTUJE složka...
 RewriteCond %{REQUEST_FILENAME} !-d
+# ...přesměruj vše do index.php
+# QSA → zachová query string (?id=5)
+# L   → zastaví další rewrite pravidla
 RewriteRule ^ index.php [QSA,L]
