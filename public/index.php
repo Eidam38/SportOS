@@ -44,6 +44,7 @@ require_once __DIR__ . '/../app/controllers/HomeController.php';
 require_once __DIR__ . '/../app/controllers/AuthController.php';
 require_once __DIR__ . '/../app/controllers/ProfileController.php';
 require_once __DIR__ . '/../core/Database.php';
+require_once __DIR__ . '/../app/models/User.php';
 
 $router = new Router();
 
@@ -65,6 +66,16 @@ $router->get('/login', function () {
       $controller->login();
 });
 
+$router->get('/signup', function () {
+      $controller = new AuthController();
+      $controller->signup();
+});
+
+$router->post('/signup', function () {
+      $controller = new AuthController();
+      $controller->signup();
+});
+
 /*
 | Route: /profile
 | Akce: Zobrazí profil uživatele
@@ -73,7 +84,6 @@ $router->get('/profile', function () {
       $controller = new ProfileController();
       $controller->index();
 });
-
 
 /*
 Zpracování requestu
