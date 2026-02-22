@@ -67,23 +67,28 @@ class AuthController
              */
             $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-            // Vytvoření instance modelu User
-            $userModel = new User();
+            try {
+                $userModel = new User();
+                $created = $userModel->create($name, $email, $hashedPassword);
 
-            // Pokus o vytvoření uživatele v databázi
-            $created = $userModel->create($name, $email, $hashedPassword);
+                if ($created) {
+                    header('Location: /login');
+                    exit;
+                }
 
-            // Pokud byl uživatel úspěšně vytvořen
-            if ($created) {
-                echo "<p>Registrace probehla uspesne.</p>";
+                echo "<p>Registrace selhala.</p>";
+                return;
+            } catch (PDOException $e) {
+                if ((int)$e->getCode() === 23000) {
+                    echo "<p>Email uz existuje.</p>";
+                    require_once __DIR__ . '/../views/signup.php';
+                    return;
+                }
+
+                echo "<p>Nastala chyba pri registraci.</p>";
                 return;
             }
-
-            // Pokud nastala chyba při ukládání
-            echo "<p>Registrace selhala.</p>";
-            return;
         }
-
         // Pokud je request typu GET → zobrazí registrační formulář
         require_once __DIR__ . '/../views/signup.php';
     }
